@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "central-limit-theorem"
+version = "0.1.0"
+description = ""
+authors = ["Bryan Gass <bryank123@live.com>"]
+readme = "README.md"
+packages = [{include = "central_limit_theorem"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+jupyter = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

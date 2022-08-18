@@ -1,0 +1,306 @@
+---
+title: "Central Limit Theorem"
+author: "Bryan"
+date: "08/17/2022"
+toc: true
+format:
+  html:
+    code-fold: true
+jupyter: julia-1.7
+---
+
+
+
+```{julia}
+#| output: false
+using Pluto
+using Random;
+using Distributions;
+using Plots;
+using AverageShiftedHistograms;
+```
+
+```{julia}
+#| output: false
+#| echo: false
+Random.seed!(123)
+```
+
+```{julia}
+#| output: false
+#| code-fold: false
+function get_normals(samples::Vector{Float64})
+    means = zeros(0)
+    vars = zeros(0)
+    for i in 1:length(samples)
+        append!(means, mean(samples[1:i]))
+        if (i > 1)
+            append!(vars, var(samples[1:i]))
+        end
+    end
+    return means, vars
+end
+```
+
+```{julia}
+#| output: false
+#| code-fold: false
+function central_limit_theorem(N::Integer, d::Any)
+    x = rand(d, N)
+    μ, σ = get_normals(x)
+    return x, μ, σ
+end
+```
+
+```{julia}
+#| output: false
+n = 1000
+M = 5
+```
+
+## Logistic Distribution
+
+### Sample From a Logistic Distribution
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Logistic-random-samples
+#| fig-cap: "Random Samples from a Logistic Distribution"
+
+dist = Logistic()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     plot(x[1:i], pdf(dist, x[1:i]), seriestype = :scatter, xlabel="Random Samples", title=("Samples: $(dist) Distribution \nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+### Take Mean Of Random Samples from a Logistic Distribution, Iteratively
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Logistic-mean-samples
+#| fig-cap: "Mean Of Samples from a Logistic Distribution"
+
+dist = Logistic()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     o = ash(μ[1:i]; rng = -4:.1:4, m=M)
+     plot(o, xlabel="Mean Of The Random Samples", title=("Mean Of Samples Plotted When\nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+## Cosine Distribution
+
+### Sample From a Cosine Distribution
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Cosine-random-samples
+#| fig-cap: "Random Samples from a Cosine Distribution"
+
+dist = Cosine()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     plot(x[1:i], pdf(dist, x[1:i]), seriestype = :scatter, xlabel="Random Samples", title=("Samples: $(dist) Distribution \nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+### Take Mean Of Random Samples from a Cosine Distribution, Iteratively
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Cosine-mean-samples
+#| fig-cap: "Mean Of Samples from a Cosine Distribution"
+
+dist = Cosine()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     o = ash(μ[1:i]; rng = -4:.1:4, m=M)
+     plot(o, xlabel="Mean Of The Random Samples", title=("Mean Of Samples Plotted When\nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+## Uniform Distribution
+
+### Sample From a Uniform Distribution
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Uniform-random-samples
+#| fig-cap: "Random Samples from a Uniform Distribution"
+
+dist = Uniform()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     plot(x[1:i], pdf(dist, x[1:i]), seriestype = :scatter, xlabel="Random Samples", title=("Samples: $(dist) Distribution \nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+### Take Mean Of Random Samples from a Uniform Distribution, Iteratively
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Uniform-mean-samples
+#| fig-cap: "Mean Of Samples from a Uniform Distribution"
+
+dist = Uniform()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     o = ash(μ[1:i]; rng = -4:.1:4, m=M)
+     plot(o, xlabel="Mean Of The Random Samples", title=("Mean Of Samples Plotted When\nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+## Exponential Distribution
+
+### Sample From a Exponential Distribution
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Exponential-random-samples
+#| fig-cap: "Random Samples from a Exponential Distribution"
+
+dist = Exponential()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     plot(x[1:i], pdf(dist, x[1:i]), seriestype = :scatter, xlabel="Random Samples", title=("Samples: $(dist) Distribution \nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+### Take Mean Of Random Samples from a Exponential Distribution, Iteratively
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Exponential-mean-samples
+#| fig-cap: "Mean Of Samples from a Exponential Distribution"
+
+dist = Exponential()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     o = ash(μ[1:i]; rng = -4:.1:4, m=M)
+     plot(o, xlabel="Mean Of The Random Samples", title=("Mean Of Samples Plotted When\nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+## Arcsine Distribution
+
+### Sample From a Arcsine Distribution
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Arcsine-random-samples
+#| fig-cap: "Random Samples from a Arcsine Distribution"
+
+dist = Arcsine()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     plot(x[1:i], pdf(dist, x[1:i]), seriestype = :scatter, xlabel="Random Samples", title=("Samples: $(dist) Distribution \nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+### Take Mean Of Random Samples from a Arcsine Distribution, Iteratively
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Arcsine-mean-samples
+#| fig-cap: "Mean Of Samples from a Arcsine Distribution"
+
+dist = Arcsine()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     o = ash(μ[1:i]; rng = -4:.1:4, m=M)
+     plot(o, xlabel="Mean Of The Random Samples", title=("Mean Of Samples Plotted When\nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+## Beta Distribution
+
+### Sample From a Beta Distribution
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Beta-random-samples
+#| fig-cap: "Random Samples from a Beta Distribution"
+
+dist = Beta()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     plot(x[1:i], pdf(dist, x[1:i]), seriestype = :scatter, xlabel="Random Samples", title=("Samples: $(dist) Distribution \nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
+### Take Mean Of Random Samples from a Beta Distribution, Iteratively
+
+```{julia}
+#| eval: true
+#| info: false
+#| warning: false
+#| error: false
+#| label: fig-Beta-mean-samples
+#| fig-cap: "Mean Of Samples from a Beta Distribution"
+
+dist = Beta()
+x, μ, σ = central_limit_theorem(n, dist);
+anim = @animate for i = 1:10:n
+     o = ash(μ[1:i]; rng = -4:.1:4, m=M)
+     plot(o, xlabel="Mean Of The Random Samples", title=("Mean Of Samples Plotted When\nn="*string(i)), lab=nothing)
+end
+
+display(gif(anim));
+```
+
